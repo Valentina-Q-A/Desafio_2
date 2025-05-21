@@ -1,7 +1,8 @@
 #include "Administrador.h"
 #include <iostream>
+using namespace std;
 
-Administrador::Administrador(char documento, short int exp, float estrellas)
+Administrador::Administrador(string documento, short int exp, float estrellas)
     : documento(documento), exp(exp), estrellas(estrellas),
     numAlojamientos(0), capacidad(5)
 {
@@ -26,7 +27,7 @@ void Administrador::agregarAlojamiento(Alojamiento* a) {
     alojamientos[numAlojamientos++] = a;
 }
 
-bool Administrador::eliminarAlojamiento(const std::string& codigo) {
+bool Administrador::eliminarAlojamiento(const string& codigo) {
     for (int i = 0; i < numAlojamientos; i++) {
         if (alojamientos[i]->getCodigo() == codigo) {
             delete alojamientos[i];
@@ -44,11 +45,11 @@ void Administrador::mostrarAlojamientos() const {
         alojamientos[i]->mostrar();
 }
 
-char Administrador::getDocumento() const { return documento; }
+string Administrador::getDocumento() const { return documento; }
 short int Administrador::getExp() const { return exp; }
 float Administrador::getEstrellas() const { return estrellas; }
 short int Administrador::getNumAlojamientos() const { return numAlojamientos; }
 
-void Administrador::setDocumento(char d) { documento = d; }
+void Administrador::setDocumento(string d) { documento = d; }
 void Administrador::setExp(short int e) { exp = e; }
 void Administrador::setEstrellas(float est) { estrellas = est; }
