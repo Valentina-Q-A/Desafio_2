@@ -1,25 +1,26 @@
 #include "Reserva.h"
 #include <sstream>
 #include <iostream>
+using namespace std;
 
 Reserva::Reserva() {}
 
-Reserva::Reserva(std::string id, Fecha fi, unsigned int noches,
-                 std::string idAlojamiento, char docCliente,
-                 std::string metodoPago, Fecha fechaPago,
-                 double valor, std::string comentario)
+Reserva::Reserva(string id, Fecha fi, unsigned int noches,
+                 string idAlojamiento, string docCliente,
+                 string metodoPago, Fecha fechaPago,
+                 double valor, string comentario)
     : id(id), fechaInicio(fi), noches(noches),
     idAlojamiento(idAlojamiento), docCliente(docCliente),
     metodoPago(metodoPago), fechaPago(fechaPago),
     valor(valor), comentario(comentario) {}
 
-std::string Reserva::getId() const { return id; }
+string Reserva::getId() const { return id; }
 Fecha Reserva::getFechaInicio() const { return fechaInicio; }
 Fecha Reserva::getFechaSalida() const { return fechaInicio.sumarNoches(noches); }
-char Reserva::getDocCliente() const { return docCliente; }
-std::string Reserva::getIdAlojamiento() const { return idAlojamiento; }
-std::string Reserva::getMetodoPago() const { return metodoPago; }
-std::string Reserva::getComentario() const { return comentario; }
+string Reserva::getDocCliente() const { return docCliente; }
+string Reserva::getIdAlojamiento() const { return idAlojamiento; }
+string Reserva::getMetodoPago() const { return metodoPago; }
+string Reserva::getComentario() const { return comentario; }
 double Reserva::getValor() const { return valor; }
 
 bool Reserva::fechaEnUso(Fecha inicio, unsigned int nochesNueva) const {
@@ -30,20 +31,20 @@ bool Reserva::fechaEnUso(Fecha inicio, unsigned int nochesNueva) const {
 }
 
 void Reserva::mostrarResumen() const {
-    std::cout << "Reserva: " << id << ", Alojamiento: " << idAlojamiento
-              << ", Cliente: " << docCliente << ", Valor: " << valor << std::endl;
+    cout << "Reserva: " << id << ", Alojamiento: " << idAlojamiento
+         << ", Cliente: " << docCliente << ", Valor: " << valor << endl;
 }
 
-Reserva* Reserva::cargarDesdeLinea(const std::string& linea) {
-    std::stringstream ss(linea);
-    std::string id, fechaIniStr, idAloj, metodo, fechaPagoStr, comentario;
+Reserva* Reserva::cargarDesdeLinea(const string& linea) {
+    stringstream ss(linea);
+    string id, fechaIniStr, idAloj, metodo, fechaPagoStr, comentario;
     Fecha fi, fp;
     unsigned int noches;
-    char docCli;
+    string docCli;
     double valor;
 
     ss >> id >> fechaIniStr >> noches >> idAloj >> docCli >> metodo >> fechaPagoStr >> valor;
-    std::getline(ss, comentario); // toma todo lo restante como comentario
+    getline(ss, comentario); // Toma el resto como comentario (hasta 1000 caracteres)
 
     fi.cargarDesdeCadena(fechaIniStr);
     fp.cargarDesdeCadena(fechaPagoStr);
@@ -51,10 +52,11 @@ Reserva* Reserva::cargarDesdeLinea(const std::string& linea) {
     return new Reserva(id, fi, noches, idAloj, docCli, metodo, fp, valor, comentario);
 }
 
-std::string Reserva::aLinea() const {
-    std::stringstream ss;
+string Reserva::aLinea() const {
+    stringstream ss;
     ss << id << " " << fechaInicio.aCadena() << " " << noches << " "
        << idAlojamiento << " " << docCliente << " " << metodoPago << " "
        << fechaPago.aCadena() << " " << valor << " " << comentario;
     return ss.str();
 }
+
