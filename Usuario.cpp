@@ -65,10 +65,11 @@ void Usuario::setEstrellas(float est) { estrellas = est; }
 
 Usuario* Usuario::cargarDesdeLinea(const string& linea) {
     stringstream ss(linea);
-    string doc;
-    int exp;
-    float est;
-    ss >> doc >> exp >> est;
-    return new Usuario(doc, exp, est);
-}
+    string doc, expStr, estStr;
 
+    getline(ss, doc, '|');
+    getline(ss, expStr, '|');
+    getline(ss, estStr, '|');
+
+    return new Usuario(doc, stoi(expStr), stof(estStr));
+}
