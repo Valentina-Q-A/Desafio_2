@@ -3,47 +3,49 @@
 
 #include "Reserva.h"
 #include <string>
+using namespace std;
 
 class Alojamiento {
 private:
-    std::string codigo;
-    std::string nombre;
-    bool tipo;
-    std::string direccion;
-    std::string municipio;
-    std::string departamento;
+    string codigo;
+    string nombre;
+    bool tipo; // true = Casa, false = Apartamento
+    string direccion;
+    string municipio;
+    string departamento;
     double precioPorNoche;
-    char anfitrionDoc;
-    std::string amenidades;
+    string anfitrionDoc;
+    string amenidades;
+
     Reserva** reservas;
     int cantidadReservas;
     int capacidad;
     int cantAmenidades;
 
 public:
-    Alojamiento(std::string codigo, std::string nombre, bool tipo,
-                std::string direccion, std::string municipio,
-                std::string departamento, double precio,
-                char anfitrionDoc);
+    Alojamiento(string codigo, string nombre, bool tipo,
+                string direccion, string municipio,
+                string departamento, double precio,
+                string anfitrionDoc);
 
     ~Alojamiento();
 
     void mostrarDisponibilidad();
     bool estaDisponible(Fecha, int);
 
-    std::string getCodigo() const;
+    string getCodigo() const;
     bool getTipo() const;
     double getPrecio() const;
-    std::string getMunicipio() const;
-    std::string getAmenidades() const;
+    string getMunicipio() const;
+    string getAmenidades() const;
     int getCantReservas() const;
 
     void setPrecio(double);
-    void setDireccion(const std::string&);
+    void setDireccion(const string&);
     void setTipo(bool);
     void mostrar() const;
 
-    static Alojamiento* cargarDesdeLinea(const std::string& linea);
+    static Alojamiento* cargarDesdeLinea(const string& linea);
 };
 
 #endif
