@@ -45,6 +45,7 @@ public:
     void setTipo(bool);
     void mostrar() const;
 
+    string getAnfitrionDoc() const;
     static Alojamiento* cargarDesdeLinea(const string& linea);
 };
 
