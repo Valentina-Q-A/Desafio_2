@@ -1,6 +1,7 @@
 #include "Fecha.h"
 #include <sstream>
 #include <iomanip>
+using namespace std;
 
 Fecha::Fecha(short int d, short int m, short int a) {
     dia = d;
@@ -25,22 +26,22 @@ bool Fecha::compararFecha(Fecha* f1, Fecha* f2) {
     return f1->dia < f2->dia;
 }
 
-std::string Fecha::mostrarFechaFormato() const {
-    std::ostringstream oss;
-    oss << std::setw(2) << std::setfill('0') << dia << "/"
-        << std::setw(2) << std::setfill('0') << mes << "/"
+string Fecha::mostrarFechaFormato() const {
+    ostringstream oss;
+    oss << setw(2) << setfill('0') << dia << "/"
+        << setw(2) << setfill('0') << mes << "/"
         << anio;
     return oss.str();
 }
 
-bool Fecha::cargarDesdeCadena(const std::string& cadena) {
-    std::stringstream ss(cadena);
+bool Fecha::cargarDesdeCadena(const string& cadena) {
+    stringstream ss(cadena);
     char slash;
     ss >> dia >> slash >> mes >> slash >> anio;
     return !ss.fail();
 }
 
-std::string Fecha::aCadena() const {
+string Fecha::aCadena() const {
     return mostrarFechaFormato();
 }
 
@@ -52,13 +53,13 @@ void Fecha::setDia(int d) { dia = d; }
 void Fecha::setMes(short int m) { mes = m; }
 void Fecha::setAnio(short int a) { anio = a; }
 
-std::ostream& operator<<(std::ostream& os, const Fecha& f) {
+ostream& operator<<(ostream& os, const Fecha& f) {
     os << f.aCadena();
     return os;
 }
 
-std::istream& operator>>(std::istream& is, Fecha& f) {
-    std::string s;
+istream& operator>>(istream& is, Fecha& f) {
+    string s;
     is >> s;
     f.cargarDesdeCadena(s);
     return is;
