@@ -1,5 +1,6 @@
 #include "Administrador.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 Administrador::Administrador(string documento, short int exp, float estrellas)
@@ -10,35 +11,9 @@ Administrador::Administrador(string documento, short int exp, float estrellas)
 }
 
 Administrador::~Administrador() {
-    for (int i = 0; i < numAlojamientos; i++)
-        delete alojamientos[i];
-    delete[] alojamientos;
+    delete[] alojamientos; // Solo borra el arreglo de punteros
 }
 
-void Administrador::agregarAlojamiento(Alojamiento* a) {
-    if (numAlojamientos == capacidad) {
-        capacidad *= 2;
-        Alojamiento** nuevo = new Alojamiento*[capacidad];
-        for (int i = 0; i < numAlojamientos; i++)
-            nuevo[i] = alojamientos[i];
-        delete[] alojamientos;
-        alojamientos = nuevo;
-    }
-    alojamientos[numAlojamientos++] = a;
-}
-
-bool Administrador::eliminarAlojamiento(const string& codigo) {
-    for (int i = 0; i < numAlojamientos; i++) {
-        if (alojamientos[i]->getCodigo() == codigo) {
-            delete alojamientos[i];
-            for (int j = i; j < numAlojamientos - 1; j++)
-                alojamientos[j] = alojamientos[j + 1];
-            numAlojamientos--;
-            return true;
-        }
-    }
-    return false;
-}
 
 void Administrador::mostrarAlojamientos() const {
     for (int i = 0; i < numAlojamientos; i++)
@@ -53,3 +28,33 @@ short int Administrador::getNumAlojamientos() const { return numAlojamientos; }
 void Administrador::setDocumento(string d) { documento = d; }
 void Administrador::setExp(short int e) { exp = e; }
 void Administrador::setEstrellas(float est) { estrellas = est; }
+
+Administrador* Administrador::cargarDesdeLinea(const string& linea) {
+    stringstream ss(linea);
+    string doc, expStr, estStr;
+
+    getline(ss, doc, '|');
+    getline(ss, expStr, '|');
+    getline(ss, estStr, '|');
+
+    return new Administrador(doc, stoi(expStr), stof(estStr));
+}
+
+void Administrador::agregarAlojamiento(Alojamiento* a) {
+    if (numAlojamientos == capacidad) {
+        capacidad *= 2;
+        Alojamiento** nuevo = new Alojamiento*[capacidad];
+        for (int i = 0; i < numAlojamientos; i++)
+            nuevo[i] = alojamientos[i];
+        delete[] alojamientos;
+        alojamientos = nuevo;
+    }
+    alojamientos[numAlojamientos++] = a;
+}
+
+Alojamiento* Administrador::getAlojamiento(int index) const {
+    if (index >= 0 && index < numAlojamientos) {
+        return alojamientos[index];
+    }
+    return nullptr;
+}
