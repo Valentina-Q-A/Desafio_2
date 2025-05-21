@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+using namespace std;
 
 class Fecha {
 private:
@@ -17,9 +18,9 @@ public:
     bool esBisiesto(int anio) const;
     Fecha sumarNoches(unsigned int noches) const;
 
-    std::string mostrarFechaFormato() const;
-    bool cargarDesdeCadena(const std::string& cadena);
-    std::string aCadena() const;
+    string mostrarFechaFormato() const;
+    bool cargarDesdeCadena(const string& cadena);
+    string aCadena() const;
 
     int getDia() const;
     int getMes() const;
@@ -29,10 +30,8 @@ public:
     void setMes(short int m);
     void setAnio(short int a);
 
-    friend std::ostream& operator<<(std::ostream& os, const Fecha& f);
-    friend std::istream& operator>>(std::istream& is, Fecha& f);
+    friend ostream& operator<<(ostream& os, const Fecha& f);
+    friend istream& operator>>(istream& is, Fecha& f);
 };
 
 #endif
-
-
