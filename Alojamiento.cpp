@@ -66,3 +66,7 @@ Alojamiento* Alojamiento::cargarDesdeLinea(const string& linea) {
 
     return new Alojamiento(codigo, nombre, tipo, direccion, municipio, departamento, precio, anfitrionDoc);
 }
+
+string Alojamiento::getAnfitrionDoc() const {
+    return anfitrionDoc;
+}
