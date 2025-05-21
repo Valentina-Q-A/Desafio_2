@@ -3,10 +3,11 @@
 
 #include "Reserva.h"
 #include <string>
+using namespace std;
 
 class Usuario {
 private:
-    char documento;
+    string documento;
     short int exp;
     float estrellas;
     Reserva** reservaciones;
@@ -14,24 +15,25 @@ private:
     int capacidad;
 
 public:
-    Usuario(char documento = '-', short int exp = 0, float estrellas = 0.0);
+    Usuario(string documento = "-", short int exp = 0, float estrellas = 0.0);
     ~Usuario();
 
     void agregarReserva(Reserva* r);
     bool fechaDisponible(Fecha f, int noches);
     void mostrarReservas() const;
-    bool eliminarReserva(const std::string& id);
+    bool eliminarReserva(const string& id);
 
-    char getDocumento() const;
+    string getDocumento() const;
     short int getExp() const;
     float getEstrellas() const;
     short int getNumReservas() const;
 
-    void setDocumento(char d);
+    void setDocumento(string d);
     void setExp(short int e);
     void setEstrellas(float est);
 
-    static Usuario* cargarDesdeLinea(const std::string& linea);
+    static Usuario* cargarDesdeLinea(const string& linea);
 };
 
 #endif
+
