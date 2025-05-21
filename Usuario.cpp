@@ -1,8 +1,9 @@
 #include "Usuario.h"
 #include <iostream>
 #include <sstream>
+using namespace std;
 
-Usuario::Usuario(char documento, short int exp, float estrellas)
+Usuario::Usuario(string documento, short int exp, float estrellas)
     : documento(documento), exp(exp), estrellas(estrellas),
     numReservas(0), capacidad(5)
 {
@@ -35,12 +36,12 @@ bool Usuario::fechaDisponible(Fecha f, int noches) {
 }
 
 void Usuario::mostrarReservas() const {
-    std::cout << "Reservas del usuario " << documento << ":\n";
+    cout << "Reservas del usuario " << documento << ":\n";
     for (int i = 0; i < numReservas; i++)
         reservaciones[i]->mostrarResumen();
 }
 
-bool Usuario::eliminarReserva(const std::string& id) {
+bool Usuario::eliminarReserva(const string& id) {
     for (int i = 0; i < numReservas; i++) {
         if (reservaciones[i]->getId() == id) {
             delete reservaciones[i];
@@ -53,20 +54,21 @@ bool Usuario::eliminarReserva(const std::string& id) {
     return false;
 }
 
-char Usuario::getDocumento() const { return documento; }
+string Usuario::getDocumento() const { return documento; }
 short int Usuario::getExp() const { return exp; }
 float Usuario::getEstrellas() const { return estrellas; }
 short int Usuario::getNumReservas() const { return numReservas; }
 
-void Usuario::setDocumento(char d) { documento = d; }
+void Usuario::setDocumento(string d) { documento = d; }
 void Usuario::setExp(short int e) { exp = e; }
 void Usuario::setEstrellas(float est) { estrellas = est; }
 
-Usuario* Usuario::cargarDesdeLinea(const std::string& linea) {
-    std::stringstream ss(linea);
-    char doc;
+Usuario* Usuario::cargarDesdeLinea(const string& linea) {
+    stringstream ss(linea);
+    string doc;
     int exp;
     float est;
     ss >> doc >> exp >> est;
     return new Usuario(doc, exp, est);
 }
+
