@@ -37,26 +37,36 @@ void Reserva::mostrarResumen() const {
 
 Reserva* Reserva::cargarDesdeLinea(const string& linea) {
     stringstream ss(linea);
-    string id, fechaIniStr, idAloj, metodo, fechaPagoStr, comentario;
+    string id, fechaIniStr, nochesStr, idAloj, docCli, metodo, fechaPagoStr, valorStr, comentario;
+
+    getline(ss, id, '|');
+    getline(ss, fechaIniStr, '|');
+    getline(ss, nochesStr, '|');
+    getline(ss, idAloj, '|');
+    getline(ss, docCli, '|');
+    getline(ss, metodo, '|');
+    getline(ss, fechaPagoStr, '|');
+    getline(ss, valorStr, '|');
+    getline(ss, comentario, '|');
+
     Fecha fi, fp;
-    unsigned int noches;
-    string docCli;
-    double valor;
-
-    ss >> id >> fechaIniStr >> noches >> idAloj >> docCli >> metodo >> fechaPagoStr >> valor;
-    getline(ss, comentario); // Toma el resto como comentario (hasta 1000 caracteres)
-
     fi.cargarDesdeCadena(fechaIniStr);
     fp.cargarDesdeCadena(fechaPagoStr);
 
-    return new Reserva(id, fi, noches, idAloj, docCli, metodo, fp, valor, comentario);
+    return new Reserva(id, fi, stoi(nochesStr), idAloj, docCli, metodo, fp, stod(valorStr), comentario);
 }
+
 
 string Reserva::aLinea() const {
     stringstream ss;
-    ss << id << " " << fechaInicio.aCadena() << " " << noches << " "
-       << idAlojamiento << " " << docCliente << " " << metodoPago << " "
-       << fechaPago.aCadena() << " " << valor << " " << comentario;
+    ss << id << "|"
+       << fechaInicio.aCadena() << "|"
+       << noches << "|"
+       << idAlojamiento << "|"
+       << docCliente << "|"
+       << metodoPago << "|"
+       << fechaPago.aCadena() << "|"
+       << valor << "|"
+       << comentario;
     return ss.str();
 }
-
