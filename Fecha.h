@@ -14,7 +14,7 @@ private:
 public:
     Fecha(short int d = 1, short int m = 1, short int a = 2000);
 
-    static bool compararFecha(Fecha* f1, Fecha* f2);
+    static bool compararFecha(const Fecha* f1, const Fecha* f2);
     bool esBisiesto(int anio) const;
     Fecha sumarNoches(unsigned int noches) const;
 
