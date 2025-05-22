@@ -47,6 +47,11 @@ public:
 
     string getAnfitrionDoc() const;
     static Alojamiento* cargarDesdeLinea(const string& linea);
+
+    void agregarReserva(Reserva* r);
+    Reserva* getReserva(int index) const;
+    void mostrarReservasPorRango(const Fecha& desde, const Fecha& hasta) const;
+
 };
 
 #endif
