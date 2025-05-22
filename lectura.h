@@ -15,7 +15,9 @@ int cargarAlojamientos(const string& nombreArchivo, Alojamiento**& alojamientos)
 
 void asociarAlojamientos(Administrador** admins, int cantAdmins, Alojamiento** alojamientos, int cantAlojamientos);
 
-// Cargar reservas desde archivo
 int cargarReservas(const string& nombreArchivo, Reserva**& reservas);
+void asociarReservas(Reserva** reservas, int cantReservas, Usuario** usuarios,
+                     int cantUsuarios, Alojamiento** alojamientos, int cantAlojamientos);
+
 
 #endif
