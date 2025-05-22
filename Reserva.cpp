@@ -70,3 +70,4 @@ string Reserva::aLinea() const {
        << comentario;
     return ss.str();
 }
+
