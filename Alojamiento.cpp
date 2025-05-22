@@ -70,3 +70,33 @@ Alojamiento* Alojamiento::cargarDesdeLinea(const string& linea) {
 string Alojamiento::getAnfitrionDoc() const {
     return anfitrionDoc;
 }
+
+void Alojamiento::agregarReserva(Reserva* r) {
+    if (cantidadReservas == capacidad) {
+        capacidad *= 2;
+        Reserva** nuevo = new Reserva*[capacidad];
+        for (int i = 0; i < cantidadReservas; i++)
+            nuevo[i] = reservas[i];
+        delete[] reservas;
+        reservas = nuevo;
+    }
+    reservas[cantidadReservas++] = r;
+}
+
+Reserva* Alojamiento::getReserva(int index) const {
+    if (index >= 0 && index < cantidadReservas) {
+        return reservas[index];
+    }
+    return nullptr;
+}
+
+void Alojamiento::mostrarReservasPorRango(const Fecha& desde, const Fecha& hasta) const {
+    for (int i = 0; i < cantidadReservas; i++) {
+        Fecha ini = reservas[i]->getFechaInicio();
+        Fecha fin = reservas[i]->getFechaSalida();
+        // Mostrar si hay traslape con el rango dado
+        if (!(Fecha::compararFecha(&fin, &desde) || Fecha::compararFecha(&hasta, &ini))) {
+            reservas[i]->mostrarResumen();
+        }
+    }
+}
