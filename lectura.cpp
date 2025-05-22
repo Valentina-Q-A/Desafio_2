@@ -110,5 +110,60 @@ void asociarAlojamientos(Administrador** admins, int cantAdmins, Alojamiento** a
     }
 }
 
+int cargarReservas(const string& nombreArchivo, Reserva**& reservas) {
+    ifstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo de reservas: " << nombreArchivo << endl;
+        reservas = nullptr;
+        return 0;
+    }
+
+    int capacidad = 20;
+    int cantidad = 0;
+    reservas = new Reserva*[capacidad];
+
+    string linea;
+    while (getline(archivo, linea)) {
+        if (cantidad == capacidad) {
+            capacidad *= 2;
+            Reserva** nuevo = new Reserva*[capacidad];
+            for (int i = 0; i < cantidad; i++)
+                nuevo[i] = reservas[i];
+            delete[] reservas;
+            reservas = nuevo;
+        }
+
+        reservas[cantidad++] = Reserva::cargarDesdeLinea(linea);
+    }
+
+    archivo.close();
+    return cantidad;
+}
+
+void asociarReservas(Reserva** reservas, int cantReservas, Usuario** usuarios, int cantUsuarios, Alojamiento** alojamientos, int cantAlojamientos) {
+    for (int i = 0; i < cantReservas; i++) {
+        Reserva* r = reservas[i];
+
+        // Asociar al usuario (huésped)
+        string doc = r->getDocCliente();
+        for (int j = 0; j < cantUsuarios; j++) {
+            if (usuarios[j]->getDocumento() == doc) {
+                usuarios[j]->agregarReserva(r);
+                break;
+            }
+        }
+
+        // Asociar al alojamiento
+        string idAloj = r->getIdAlojamiento();
+        for (int j = 0; j < cantAlojamientos; j++) {
+            if (alojamientos[j]->getCodigo() == idAloj) {
+                // Aquí lo asociamos también al alojamiento
+                alojamientos[j]->agregarReserva(r);
+                break;
+            }
+
+        }
+    }
+}
 
 
