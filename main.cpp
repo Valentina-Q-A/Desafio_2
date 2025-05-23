@@ -201,8 +201,38 @@ int main() {
             }
 
         } else if (opcion == 2) {
-            cout << "Ingreso como usuario aún no implementado.\n";
-            // (Pendiente para después)
+            string docUsuario;
+            cout << "Ingrese su documento de usuario: ";
+            cin >> docUsuario;
+
+            Usuario* usuario = buscarUsuario(usuarios, numUsuarios, docUsuario);
+            if (usuario) {
+                cout << "\nBienvenido, usuario " << usuario->getDocumento() << endl;
+
+                int opUsuario = 0;
+                do {
+                    cout << "\n--- Menú Usuario ---\n";
+                    cout << "1. Consultar mis reservas\n";
+                    cout << "2. Volver al menú principal\n";
+                    cout << "Seleccione una opción: ";
+                    cin >> opUsuario;
+
+                    if (cin.fail()) {
+                        limpiarBufferEntrada();
+                        cout << "Entrada inválida. Intente nuevamente.\n";
+                        continue;
+                    }
+
+                    if (opUsuario == 1) {
+                        cout << "\n=== Reservas activas de " << usuario->getDocumento() << " ===\n";
+                        usuario->mostrarReservas();
+                    }
+
+                } while (opUsuario != 2);
+
+            } else {
+                cout << "Usuario no encontrado.\n";
+            }
         }
 
     } while (opcion != 3);
@@ -211,3 +241,4 @@ int main() {
 
     return 0;
 }
+
