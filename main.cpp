@@ -148,7 +148,7 @@ int main() {
 
         if (cin.fail()) {
             limpiarBufferEntrada();
-            cout << "Entrada inválida. Intente nuevamente.\n";
+            cout << "Entrada invalida. Intente nuevamente.\n";
             continue;
         }
 
@@ -165,13 +165,13 @@ int main() {
                 do {
                     cout << "\n--- Menu Administrador ---\n";
                     cout << "1. Consultar reservas por rango de fechas\n";
-                    cout << "2. Volver al menú principal\n";
-                    cout << "Seleccione una opción: ";
+                    cout << "2. Volver al menu principal\n";
+                    cout << "Seleccione una opcion: ";
                     cin >> opAdmin;
 
                     if (cin.fail()) {
                         limpiarBufferEntrada();
-                        cout << "Entrada inválida. Intente nuevamente.\n";
+                        cout << "Entrada invalida. Intente nuevamente.\n";
                         continue;
                     }
 
@@ -211,21 +211,52 @@ int main() {
 
                 int opUsuario = 0;
                 do {
-                    cout << "\n--- Menú Usuario ---\n";
+                    cout << "\n--- Menu Usuario ---\n";
                     cout << "1. Consultar mis reservas\n";
-                    cout << "2. Volver al menú principal\n";
-                    cout << "Seleccione una opción: ";
+                    cout << "2. Cancelar una reserva\n";
+                    cout << "3. Volver al menu principal\n";
+                    cout << "Seleccione una opcion: ";
                     cin >> opUsuario;
 
                     if (cin.fail()) {
                         limpiarBufferEntrada();
-                        cout << "Entrada inválida. Intente nuevamente.\n";
+                        cout << "Entrada invalida. Intente nuevamente.\n";
                         continue;
                     }
 
                     if (opUsuario == 1) {
                         cout << "\n=== Reservas activas de " << usuario->getDocumento() << " ===\n";
                         usuario->mostrarReservas();
+                        cout << endl;
+                    }
+                    else if (opUsuario == 2) {
+                        cout << "\n=== Cancelacion de reserva ===\n";
+                        usuario->mostrarReservas();
+
+                        cout << "Ingrese el ID de la reserva a cancelar: ";
+                        string idCancelar;
+                        cin >> idCancelar;
+
+                        bool encontradaEnAlojamiento = false;
+                        for (int i = 0; i < numAlojamientos; i++) {
+                            if (alojamientos[i]->eliminarReserva(idCancelar)) {
+                                encontradaEnAlojamiento = true;
+                                break;
+                            }
+                        }
+
+                        if (encontradaEnAlojamiento) {
+                            // Ahora sí es seguro eliminarla del usuario
+                            bool fueEliminada = usuario->eliminarReserva(idCancelar);
+                            if (fueEliminada) {
+                                cout << "Reserva cancelada exitosamente.\n";
+                            } else {
+                                cout << "Error interno: se encontró en el alojamiento pero no en el usuario.\n";
+                            }
+                        } else {
+                            cout << "No se encontro ninguna reserva con ese ID.\n";
+                        }
+
                     }
 
                 } while (opUsuario != 2);
@@ -241,4 +272,3 @@ int main() {
 
     return 0;
 }
-
