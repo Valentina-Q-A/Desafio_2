@@ -166,7 +166,8 @@ int main() {
                     cout << "\n--- Menu Administrador ---\n";
                     cout << "1. Consultar reservas por rango de fechas\n";
                     cout << "2. Cancelar una reserva"<<endl;
-                    cout << "3. Volver al menu principal\n";
+                    cout << "3. Actualizar historico"<<endl;
+                    cout << "4. Volver al menu principal\n";
                     cout << "Seleccione una opcion: ";
                     cin >> opAdmin;
 
@@ -262,7 +263,94 @@ int main() {
                         }
                     }
 
-                } while (opAdmin != 3);
+                    else if (opAdmin == 3) {
+                        cout << "\n=== ACTUALIZAR HISTORICO DE RESERVAS ===\n";
+                        string fechaStr;
+                        cout << "Ingrese la fecha de corte (DD/MM/AAAA): ";
+                        cin >> fechaStr;
+                        Fecha fechaCorte;
+                        fechaCorte.cargarDesdeCadena(fechaStr);
+
+                        // Paso 1: cargar histórico existente
+                        Reserva** historicas = nullptr;
+                        int numHistoricas = cargarReservas("historico.txt", historicas);
+
+                        // Paso 2: crear arreglo temporal para nuevas históricas
+                        Reserva** nuevasHistoricas = new Reserva*[numReservas];
+                        int numNuevasHistoricas = 0;
+
+                        int totalMovidas = 0;
+
+                        // Paso 3: recorrer arreglo global de reservas
+                        int i = 0;
+                        while (i < numReservas) {
+                            Reserva* r = reservas[i];
+
+                            // Verificar si el alojamiento pertenece al admin actual
+                            bool pertenece = false;
+                            for (int j = 0; j < admin->getNumAlojamientos(); j++) {
+                                if (admin->getAlojamiento(j)->getCodigo() == r->getIdAlojamiento()) {
+                                    pertenece = true;
+                                    break;
+                                }
+                            }
+
+                            if (!pertenece) {
+                                i++;
+                                continue;
+                            }
+
+                            // Verificar si ya terminó
+                            Fecha salida = r -> getFechaSalida(); //Se copia el resultado en una variable
+                            if (Fecha::compararFecha(&salida, &fechaCorte)) {
+                                // 1. Eliminar del usuario
+                                Usuario* u = buscarUsuario(usuarios, numUsuarios, r->getDocCliente());
+                                if (u != nullptr) u->eliminarReserva(r->getId());
+
+                                // 2. Eliminar del alojamiento
+                                for (int j = 0; j < numAlojamientos; j++) {
+                                    if (alojamientos[j]->getCodigo() == r->getIdAlojamiento()) {
+                                        alojamientos[j]->eliminarReserva(r->getId());
+                                        break;
+                                    }
+                                }
+
+                                // 3. Guardar como histórica
+                                nuevasHistoricas[numNuevasHistoricas++] = r;
+
+                                // 4. Eliminar del arreglo global
+                                for (int j = i; j < numReservas - 1; j++) {
+                                    reservas[j] = reservas[j + 1];
+                                }
+                                numReservas--;
+                                totalMovidas++;
+                                // No incrementamos i porque ya se desplazaron los elementos
+                            } else {
+                                i++;
+                            }
+                        }
+
+                        // Paso 4: unir históricos y guardar en archivo
+                        Reserva** todasHistoricas = new Reserva*[numHistoricas + numNuevasHistoricas];
+                        for (int i = 0; i < numHistoricas; i++)
+                            todasHistoricas[i] = historicas[i];
+                        for (int i = 0; i < numNuevasHistoricas; i++)
+                            todasHistoricas[numHistoricas + i] = nuevasHistoricas[i];
+
+                        // Guardar resultados
+                        guardarReservas("reservas.txt", reservas, numReservas);
+                        guardarReservas("historico.txt", todasHistoricas, numHistoricas + numNuevasHistoricas);
+
+                        // Liberar memoria
+                        delete[] nuevasHistoricas;
+                        delete[] todasHistoricas;
+                        delete[] historicas;
+
+                        cout << totalMovidas << " reservas movidas al historico.\n";
+                        limpiarBufferEntrada();
+                    }
+
+                } while (opAdmin != 4);
 
             } else {
                 cout << "Administrador no encontrado.\n";
@@ -537,8 +625,6 @@ int main() {
                         cout << "Fecha de salida: " << fechaExtendida(fechaInicio.sumarNoches(noches)) << endl;
                         cout << "Total: $" << valor << endl;
 
-
-                       
                         limpiarBufferEntrada();
                     }
                 } while (opUsuario != 4);
@@ -550,6 +636,6 @@ int main() {
 
     } while (opcion != 3);
 
-    cout << "\nGracias por usar el sistema. Hasta pronto.\n";
+    cout << "\nGracias por usar nuestros servicios.\n";
     return 0;
 }
