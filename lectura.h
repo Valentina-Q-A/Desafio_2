@@ -19,5 +19,16 @@ int cargarReservas(const string& nombreArchivo, Reserva**& reservas);
 void asociarReservas(Reserva** reservas, int cantReservas, Usuario** usuarios,
                      int cantUsuarios, Alojamiento** alojamientos, int cantAlojamientos);
 
+void guardarReservas(const string& ruta, Reserva** reservas, int numReservas);
+
+string aMinusculas(const string& s);
+
+bool fechaDentroDelRango(const Fecha& f);
+
+string fechaExtendida(const Fecha& f);
+
+
+
+
 
 #endif
