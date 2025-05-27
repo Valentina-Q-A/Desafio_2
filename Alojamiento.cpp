@@ -100,3 +100,15 @@ void Alojamiento::mostrarReservasPorRango(const Fecha& desde, const Fecha& hasta
         }
     }
 }
+
+bool Alojamiento::eliminarReserva(const string& id) {
+    for (int i = 0; i < cantidadReservas; i++) {
+        if (reservas[i]->getId() == id) {
+            for (int j = i; j < cantidadReservas - 1; j++)
+                reservas[j] = reservas[j + 1];
+            cantidadReservas--;
+            return true;
+        }
+    }
+    return false;
+}
