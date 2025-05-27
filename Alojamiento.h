@@ -51,6 +51,7 @@ public:
     void agregarReserva(Reserva* r);
     Reserva* getReserva(int index) const;
     void mostrarReservasPorRango(const Fecha& desde, const Fecha& hasta) const;
+    bool eliminarReserva(const string& id);
 
 };
 
