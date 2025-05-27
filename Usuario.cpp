@@ -37,22 +37,26 @@ bool Usuario::fechaDisponible(Fecha f, int noches) {
 
 void Usuario::mostrarReservas() const {
     cout << "Reservas del usuario " << documento << ":\n";
-    for (int i = 0; i < numReservas; i++)
-        reservaciones[i]->mostrarResumen();
+    for (int i = 0; i < numReservas; i++){
+        if(reservaciones[i] != nullptr)
+            reservaciones[i]->mostrarResumen();
+    }
+    cout << endl;
 }
 
 bool Usuario::eliminarReserva(const string& id) {
     for (int i = 0; i < numReservas; i++) {
         if (reservaciones[i]->getId() == id) {
-            delete reservaciones[i];
-            for (int j = i; j < numReservas - 1; j++)
+            for (int j = i; j < numReservas - 1; j++) {
                 reservaciones[j] = reservaciones[j + 1];
+            }
             numReservas--;
             return true;
         }
     }
     return false;
 }
+
 
 string Usuario::getDocumento() const { return documento; }
 short int Usuario::getExp() const { return exp; }
@@ -73,3 +77,4 @@ Usuario* Usuario::cargarDesdeLinea(const string& linea) {
 
     return new Usuario(doc, stoi(expStr), stof(estStr));
 }
+
