@@ -2,7 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <cctype>
 #include "Administrador.h"
+#include <ctime>
 
 using namespace std;
 
@@ -164,6 +166,71 @@ void asociarReservas(Reserva** reservas, int cantReservas, Usuario** usuarios, i
 
         }
     }
+}
+
+/*
+ *Funcion para actualizar archivo de reservas cuando se haga una cancelación
+ */
+
+void guardarReservas(const string& ruta, Reserva** reservas, int numReservas) {
+    ofstream archivo(ruta);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de reservas para escritura.\n";
+        return;
+    }
+
+    for (int i = 0; i < numReservas; i++) {
+        archivo << reservas[i]->aLinea() << endl;
+    }
+
+    archivo.close();
+}
+
+/*
+ *Funcion para distinguir mayusuclas y minusculas#include <cctype>
+ */
+string aMinusculas(const string& s) {
+    string resultado = s;
+    for (size_t i = 0; i < resultado.length(); i++) {
+        resultado[i] = tolower(resultado[i]);
+    }
+    return resultado;
+}
+
+bool fechaDentroDelRango(const Fecha& f) {
+    time_t t = time(nullptr);
+    tm* ahora = localtime(&t);
+
+    // Fecha actual
+    Fecha hoy(ahora->tm_mday, ahora->tm_mon + 1, ahora->tm_year + 1900);
+
+    // Fecha máxima: hoy + 1 año
+    Fecha maximo(hoy.getDia(), hoy.getMes(), hoy.getAnio() + 1);
+
+    // Validar que f ∈ [hoy, maximo]
+    // Es decir: hoy <= f <= maximo
+    bool esMayorOIgualAHoy = !Fecha::compararFecha(&f, &hoy);       // f >= hoy
+    bool esMenorOIgualMax = !Fecha::compararFecha(&maximo, &f);     // f <= maximo
+
+    return esMayorOIgualAHoy && esMenorOIgualMax;
+}
+
+string fechaExtendida(const Fecha& f) {
+    tm estructura = {};
+    estructura.tm_mday = f.getDia();
+    estructura.tm_mon = f.getMes() - 1;
+    estructura.tm_year = f.getAnio() - 1900;
+
+    mktime(&estructura);  // Completa campos automáticos
+
+    const char* dias[] = { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
+    const char* meses[] = { "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                           "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
+
+    string resultado = dias[estructura.tm_wday];
+    resultado += ", " + to_string(f.getDia()) + " de " + meses[estructura.tm_mon];
+    resultado += " del " + to_string(f.getAnio());
+    return resultado;
 }
 
 
