@@ -31,8 +31,11 @@ bool Reserva::fechaEnUso(Fecha inicio, unsigned int nochesNueva) const {
 }
 
 void Reserva::mostrarResumen() const {
-    cout << "Reserva: " << id << ", Alojamiento: " << idAlojamiento
-         << ", Cliente: " << docCliente << ", Valor: " << valor << endl;
+    cout << "Reserva: " << id << endl;
+    cout << "Alojamiento: " << idAlojamiento <<endl;
+    cout << "Cliente: " << docCliente << endl;
+    cout << "Valor: " << valor << endl;
+    cout << "-----" << endl;
 }
 
 Reserva* Reserva::cargarDesdeLinea(const string& linea) {
@@ -70,4 +73,3 @@ string Reserva::aLinea() const {
        << comentario;
     return ss.str();
 }
-
