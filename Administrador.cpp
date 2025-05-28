@@ -1,5 +1,4 @@
 #include "Administrador.h"
-#include <iostream>
 #include <sstream>
 using namespace std;
 
