@@ -26,7 +26,7 @@ public:
     Alojamiento(string codigo, string nombre, bool tipo,
                 string direccion, string municipio,
                 string departamento, double precio,
-                string anfitrionDoc);
+                string anfitrionDoc, string amenidades);
 
     ~Alojamiento();
 
