@@ -6,13 +6,15 @@ using namespace std;
 Alojamiento::Alojamiento(string codigo, string nombre, bool tipo,
                          string direccion, string municipio,
                          string departamento, double precio,
-                         string anfitrionDoc)
+                         string anfitrionDoc, string amenidades)
     : codigo(codigo), nombre(nombre), tipo(tipo), direccion(direccion),
     municipio(municipio), departamento(departamento), precioPorNoche(precio),
-    anfitrionDoc(anfitrionDoc), cantidadReservas(0), capacidad(5), cantAmenidades(0)
+    anfitrionDoc(anfitrionDoc), amenidades(amenidades),
+    cantidadReservas(0), capacidad(5), cantAmenidades(0)
 {
     reservas = new Reserva*[capacidad];
 }
+
 
 Alojamiento::~Alojamiento() {
     for (int i = 0; i < cantidadReservas; i++)
@@ -33,7 +35,15 @@ void Alojamiento::mostrarDisponibilidad() {
 }
 
 void Alojamiento::mostrar() const {
-    cout << "Alojamiento: " << nombre << " - Precio: " << precioPorNoche << "\n";
+    cout << "Alojamiento: " << nombre << "\n";
+    cout << "Precio por noche: $" << precioPorNoche << "\n";
+    cout << "Amenidades:\n";
+
+    string amenidad;
+    stringstream ss(amenidades);
+    while (getline(ss, amenidad, ',')) {
+        cout << "  - " << amenidad << "\n";
+    }
 }
 
 string Alojamiento::getCodigo() const { return codigo; }
@@ -50,7 +60,7 @@ void Alojamiento::setTipo(bool t) { tipo = t; }
 Alojamiento* Alojamiento::cargarDesdeLinea(const string& linea) {
     stringstream ss(linea);
     string codigo, nombre, direccion, municipio, departamento, anfitrionDoc;
-    string tipoStr, precioStr;
+    string tipoStr, precioStr, amenidadesStr;
 
     getline(ss, codigo, '|');
     getline(ss, nombre, '|');
@@ -60,11 +70,12 @@ Alojamiento* Alojamiento::cargarDesdeLinea(const string& linea) {
     getline(ss, departamento, '|');
     getline(ss, precioStr, '|');
     getline(ss, anfitrionDoc, '|');
+    getline(ss, amenidadesStr, '|');
 
     bool tipo = (tipoStr == "1");
     double precio = stod(precioStr);
 
-    return new Alojamiento(codigo, nombre, tipo, direccion, municipio, departamento, precio, anfitrionDoc);
+    return new Alojamiento(codigo, nombre, tipo, direccion, municipio, departamento, precio, anfitrionDoc, amenidadesStr);
 }
 
 string Alojamiento::getAnfitrionDoc() const {
