@@ -20,7 +20,7 @@ Fecha Fecha::sumarNoches(unsigned int noches) const {
     return nueva;
 }
 
-bool Fecha::compararFecha(const Fecha* f1, const Fecha* f2) {
+int Fecha::compararFecha(const Fecha* f1, const Fecha* f2) {
     if (f1->anio != f2->anio) return f1->anio < f2->anio;
     if (f1->mes != f2->mes) return f1->mes < f2->mes;
     return f1->dia < f2->dia;
